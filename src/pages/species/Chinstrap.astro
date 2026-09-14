@@ -1,0 +1,28 @@
+---
+import GraphicSpecies from "../../components/GraphicSpecies.astro";
+import Menu from "../../components/Menu.astro";
+---
+
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Chinstrap - Penguins</title>
+  </head>
+
+  <body>
+    <Menu />
+
+    <main>
+      <h1>Les pingouins Chinstrap</h1>
+
+      <p>
+        Voici les données concernant les pingouins de l'espèce Chinstrap.
+      </p>
+
+      <GraphicSpecies
+        species="Chinstrap"
+      />
+    </main>
+  </body>
+</html>

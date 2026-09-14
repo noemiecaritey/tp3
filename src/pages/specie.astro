@@ -1,0 +1,152 @@
+---
+import GraphicSpecies from "../components/GraphicSpecies.astro";
+import penguins from "../assets/penguins.json";
+---
+
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Les espèces de pingouins</title>
+
+    <style>
+      body {
+        margin: 0;
+        font-family: sans-serif;
+      }
+
+      main {
+        padding: 30px;
+      }
+
+      /* Menu */
+      nav {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        padding: 20px;
+        position: sticky;
+        top: 0;
+        background-color: white;
+        z-index: 10;
+      }
+
+      nav a {
+        color: black;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      /* Slider horizontal */
+      .slider {
+        display: flex;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        scroll-snap-type: x mandatory;
+      }
+
+      /* Chaque graphique prend toute la largeur */
+      .graphique {
+        min-width: 100%;
+        scroll-snap-align: start;
+        padding: 30px 0;
+      }
+
+      .graphique h2 {
+        text-align: center;
+      }
+      .menu-item {
+        color: black;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+     .menu-item.active {
+        text-decoration: underline;
+        font-weight: bold;
+    }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <h1>Les espèces de pingouins</h1>
+
+      <!-- Menu -->
+      <nav>
+        <a class="menu-item px-4 py-2 rounded [.active]:bg-red-200" href="#adelie">
+            Adelie
+        </a>
+
+        <a class="menu-item px-4 py-2 rounded [.active]:bg-red-200" href="#gentoo">
+            Gentoo
+        </a>
+
+        <a class="menu-item px-4 py-2 rounded [.active]:bg-red-200" href="#chinstrap">
+            Chinstrap
+        </a>
+</nav>
+
+      <!-- Slider -->
+      <div class="slider">
+
+        <section id="adelie" class="graphique">
+          <h2>Adelie</h2>
+
+          <GraphicSpecies
+            penguins={penguins}
+            species="Adelie"
+          />
+        </section>
+
+        <section id="gentoo" class="graphique">
+          <h2>Gentoo</h2>
+
+          <GraphicSpecies
+            penguins={penguins}
+            species="Gentoo"
+          />
+        </section>
+
+        <section id="chinstrap" class="graphique">
+          <h2>Chinstrap</h2>
+
+          <GraphicSpecies
+            penguins={penguins}
+            species="Chinstrap"
+          />
+        </section>
+
+      </div>
+    </main>
+  </body>
+</html>
+
+<script>
+  const items = document.querySelectorAll(".graphique");
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const id = entry.target.getAttribute("id");
+
+        const menuItem = document.querySelector(
+          `.menu-item[href="#${id}"]`
+        );
+
+        if (entry.isIntersecting) {
+          menuItem?.classList.add("active");
+        } else {
+          menuItem?.classList.remove("active");
+        }
+      });
+    },
+    {
+      threshold: 0.5,
+    }
+  );
+
+  items.forEach((item) => {
+    observer.observe(item);
+  });
+</script>

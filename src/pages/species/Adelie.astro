@@ -1,0 +1,28 @@
+---
+import GraphicSpecies from "../../components/GraphicSpecies.astro";
+import Menu from "../../components/Menu.astro";
+---
+
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Adelie - Penguins</title>
+  </head>
+
+  <body>
+    <Menu />
+
+    <main>
+      <h1>Les pingouins Adelie</h1>
+
+      <p>
+        Voici les données concernant les pingouins de l'espèce Adelie.
+      </p>
+
+      <GraphicSpecies
+        species="Adelie"
+      />
+    </main>
+  </body>
+</html>

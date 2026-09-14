@@ -1,0 +1,30 @@
+---
+import * as Plot from "@observablehq/plot";
+import PlotFigure from "./PlotFigure.astro";
+import penguins from "../assets/penguins.json";
+
+const {  species } = Astro.props;
+
+
+const plot ={
+  title: `Pingouins ${species}`,
+
+  x: {
+    label: "Longueur du bec (mm)"
+  },
+
+  y: {
+    label: "Longueur de la nageoire (mm)"
+  },
+
+  marks: [
+    Plot.dot(penguins, {
+        filter: (d) => d.species === species,
+      x: "culmen_length_mm",
+      y: "flipper_length_mm"
+    })
+  ]
+};
+---
+
+<PlotFigure  options={plot} />
