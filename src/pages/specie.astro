@@ -73,19 +73,13 @@ import penguins from "../assets/penguins.json";
       <h1>Les espèces de pingouins</h1>
 
       <!-- Menu -->
-      <nav>
-        <a class="menu-item px-4 py-2 rounded [.active]:bg-red-200" href="#adelie">
-            Adelie
-        </a>
-
-        <a class="menu-item px-4 py-2 rounded [.active]:bg-red-200" href="#gentoo">
-            Gentoo
-        </a>
-
-        <a class="menu-item px-4 py-2 rounded [.active]:bg-red-200" href="#chinstrap">
-            Chinstrap
-        </a>
-</nav>
+       <nav>
+        <select id="species">
+          <option value="adelie">Adelie</option>
+          <option value="gentoo">Gentoo</option>
+          <option value="chinstrap">Chinstrap</option>
+        </select>
+      </nav>
 
       <!-- Slider -->
       <div class="slider">
@@ -124,29 +118,24 @@ import penguins from "../assets/penguins.json";
 
 <script>
   const items = document.querySelectorAll(".graphique");
+  const select = document.querySelector("#species");
 
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        const id = entry.target.getAttribute("id");
-
-        const menuItem = document.querySelector(
-          `.menu-item[href="#${id}"]`
-        );
-
         if (entry.isIntersecting) {
-          menuItem?.classList.add("active");
-        } else {
-          menuItem?.classList.remove("active");
+          const id = entry.target.getAttribute("id");
+          if (select) (select as HTMLSelectElement).value = id ?? "";
         }
       });
     },
-    {
-      threshold: 0.5,
-    }
+    { threshold: 0.5 }
   );
 
-  items.forEach((item) => {
-    observer.observe(item);
+  items.forEach((item) => observer.observe(item));
+
+  select?.addEventListener("change", (evt) => {
+    const value = (evt.target as HTMLSelectElement).value;
+    location.hash = value;
   });
 </script>
