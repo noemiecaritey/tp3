@@ -1,4 +1,5 @@
 ---
+import { Tabs, TabsList, TabsTab, TabsPanel } from 'accessible-astro-components';
 import GraphicSpecies from "../components/GraphicSpecies.astro";
 import penguins from "../assets/penguins.json";
 ---
@@ -8,134 +9,53 @@ import penguins from "../assets/penguins.json";
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <title>Les espèces de pingouins</title>
-
-    <style>
-      body {
-        margin: 0;
-        font-family: sans-serif;
-      }
-
-      main {
-        padding: 30px;
-      }
-
-      /* Menu */
-      nav {
-        display: flex;
-        justify-content: center;
-        gap: 30px;
-        padding: 20px;
-        position: sticky;
-        top: 0;
-        background-color: white;
-        z-index: 10;
-      }
-
-      nav a {
-        color: black;
-        text-decoration: none;
-        font-weight: bold;
-      }
-
-      /* Slider horizontal */
-      .slider {
-        display: flex;
-        overflow-x: auto;
-        scroll-behavior: smooth;
-        scroll-snap-type: x mandatory;
-      }
-
-      /* Chaque graphique prend toute la largeur */
-      .graphique {
-        min-width: 100%;
-        scroll-snap-align: start;
-        padding: 30px 0;
-      }
-
-      .graphique h2 {
-        text-align: center;
-      }
-      .menu-item {
-        color: black;
-        text-decoration: none;
-        font-weight: bold;
-      }
-
-     .menu-item.active {
-        text-decoration: underline;
-        font-weight: bold;
-    }
-    </style>
   </head>
 
   <body>
-    <main>
-      <h1>Les espèces de pingouins</h1>
+    <main class="p-8">
+      <h1 class="text-2xl font-bold mb-6">Les espèces de pingouins</h1>
 
-      <!-- Menu -->
-       <nav>
-        <select id="species">
-          <option value="adelie">Adelie</option>
-          <option value="gentoo">Gentoo</option>
-          <option value="chinstrap">Chinstrap</option>
-        </select>
-      </nav>
+      <Tabs>
+        <TabsList class="flex gap-2 mb-4">
+          <TabsTab
+            id="tab-adelie"
+            controls="panel-adelie"
+            selected
+            class="px-4! py-2! rounded-t! font-bold! border-2! border-b-0! aria-selected:bg-red-200! aria-selected:border-red-400!"
+          >
+            Adelie
+          </TabsTab>
+          <TabsTab
+            id="tab-gentoo"
+            controls="panel-gentoo"
+            class="px-4! py-2! rounded-t! font-bold! border-2! border-b-0! aria-selected:bg-red-200! aria-selected:border-red-400!"
+          >
+            Gentoo
+          </TabsTab>
+          <TabsTab
+            id="tab-chinstrap"
+            controls="panel-chinstrap"
+            class="px-4! py-2! rounded-t! font-bold! border-2! border-b-0! aria-selected:bg-red-200! aria-selected:border-red-400!"
+          >
+            Chinstrap
+          </TabsTab>
+        </TabsList>
 
-      <!-- Slider -->
-      <div class="slider">
+        <TabsPanel id="panel-adelie" labelledby="tab-adelie" selected class="p-4! border-2!">
+          <h2 class="text-center font-semibold mb-4">Adelie</h2>
+          <GraphicSpecies penguins={penguins} species="Adelie" />
+        </TabsPanel>
 
-        <section id="adelie" class="graphique">
-          <h2>Adelie</h2>
+        <TabsPanel id="panel-gentoo" labelledby="tab-gentoo" class="p-4! border-2!">
+          <h2 class="text-center font-semibold mb-4">Gentoo</h2>
+          <GraphicSpecies penguins={penguins} species="Gentoo" />
+        </TabsPanel>
 
-          <GraphicSpecies
-            penguins={penguins}
-            species="Adelie"
-          />
-        </section>
-
-        <section id="gentoo" class="graphique">
-          <h2>Gentoo</h2>
-
-          <GraphicSpecies
-            penguins={penguins}
-            species="Gentoo"
-          />
-        </section>
-
-        <section id="chinstrap" class="graphique">
-          <h2>Chinstrap</h2>
-
-          <GraphicSpecies
-            penguins={penguins}
-            species="Chinstrap"
-          />
-        </section>
-
-      </div>
+        <TabsPanel id="panel-chinstrap" labelledby="tab-chinstrap" class="p-4! border-2!">
+          <h2 class="text-center font-semibold mb-4">Chinstrap</h2>
+          <GraphicSpecies penguins={penguins} species="Chinstrap" />
+        </TabsPanel>
+      </Tabs>
     </main>
   </body>
 </html>
-
-<script>
-  const items = document.querySelectorAll(".graphique");
-  const select = document.querySelector("#species");
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const id = entry.target.getAttribute("id");
-          if (select) (select as HTMLSelectElement).value = id ?? "";
-        }
-      });
-    },
-    { threshold: 0.5 }
-  );
-
-  items.forEach((item) => observer.observe(item));
-
-  select?.addEventListener("change", (evt) => {
-    const value = (evt.target as HTMLSelectElement).value;
-    location.hash = value;
-  });
-</script>
